@@ -164,10 +164,10 @@ label light_candle_day1:
     return
 
    
-   # DAY 2__________________________
+   # DAY 2__________________________  
 
 
-label day2:
+label day2:  # SABINA EDIT !!!!
 
     scene morning_room
 
@@ -269,10 +269,10 @@ a "Good child."
 
     "The night feels different."
 
+# SAB BAB
 
 
-
-label day3:
+label day3: 
 
     scene morning_kitchen
 
@@ -313,7 +313,7 @@ label day3:
 
     g "What is it?"
 
-    a "A ritual."
+    a "A ritual."  #SAB RITUAL DIALOGUE
 
     menu:
         "Accept ritual?":
