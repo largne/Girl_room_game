@@ -14,7 +14,8 @@ label start:
 
 label day1:
 
-    scene room_day
+    scene room_day #placeholder code, will edit after images upload
+
     g "Today is silent, just like yesterday… and the day before."
 
     g "Mom said she would come back in a week, but I don’t know when that is anymore. Or if it has already passed."
