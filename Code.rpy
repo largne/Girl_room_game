@@ -104,11 +104,11 @@ label table_day1:
 
     g "Oh… Mom left something here."
 
-    "You find matches and a small note."
+    "You find matches on the table and a small note."
 
     g "I can’t read well..."
 
-    "The note reads: 'If anything scares you… close your eyes and stay still. Love, Mom.'"
+    "as you try to decipher,it appears that the note reads: 'I'll be back. If anything scares you… close your eyes and stay still. Love, Mom.'"
 
     g "..."
 
@@ -185,18 +185,21 @@ label day2:
 
     g "Angel!"
      
-    "Angel frowned glancing at the scar"
+    "Angel frowns glancing at the scar"
 
     a "What happened to you.."
 
     g "It was… that thing.. That..."
+    
+    show angel_hug
 
-    "Angel's hug was visible on the mirror, yet you #here should i say she or you# didn't feel it in reality."
-    #still i or you# "It still made me feel warm."
+    "Angel's hug was visible on the mirror, yet you didn't feel it on you."
+
+    "It still felt nice."
     
     a "A presence.."
     a "You came across something last night, didn't you?
-    a "Something not of this realm, just as me!
+    a "Something not of this realm, just as i am"
 
     "Angel's face seemed concerned"
 
@@ -206,26 +209,24 @@ label day2:
 
     g "Help… you?"
 
-    a "yes, my dear sweet child. unfortunately, nothing in this realm works for free"
-
-   a "But do not fret, it isn't something big i ask of you, infact you can do it easily."
+    a "yes, my dear sweet child. But do not fret, it isn't something big i ask of you, infact you can do it easily."
 
     g "what is it?"
 
     a "simple."
 
-    a "Pray for me. And give me something you cherish."
+    a "Pray for me."
 
     a "then i can bring my power to protect you, help you rest a night without this creatures presence"
 
-    a "All that for a small price."
+    a "But i need your prayers, you see my powers grows weak once the sun goes down."
 
     # choice
     menu:
-        "Trust the angel?":
+        "Accept Angel's offer?":
             "Yes":
                 $ angel_trust += 1
-                $ gave_offering = True
+                $ gave_prayer = True
                 jump gift_day2
 
             "No"
@@ -235,9 +236,9 @@ label gift_day2:
 
     g "Okay… I will."
 
-    "You leave a small offering."
-
     a "Good child."
+
+    "You tuck yourself in bed, and pray as you fall asleep."
 
     "The night feels different."
 
@@ -255,15 +256,18 @@ label persuasion_day2
 
 g "..." 
 
- "the choice was obvious"
+ "the choice was obvious, and its just a simple prayer."
 
 g "I'll do it."
 
 $ angel_trust += 1
-$ gave_offering = True
-jump rethink_day2
+$ gave_prayer = True
 
-Label rethink_day2
+a "Good child."
+
+    "You tuck yourself in bed, and pray as you fall asleep."
+
+    "The night feels different."
 
 
 
