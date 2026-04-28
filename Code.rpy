@@ -25,7 +25,7 @@ label day1:
 
     g "Sometimes I miss her."
 
-    g "But I’m not alone."
+    g "But atleast I’m not alone."
 
     g "Before she left, she told me that angels would take care of me. Just like they did with her."
 
@@ -43,31 +43,47 @@ label day1:
 
     # candle mechanic intro
     scene dark_room
+    g "it's getting dark, it seems today we have no electricity."
 
-    g "The light is gone..."
-
-    g "I should light a candle."
+    g "I should light a candle before it turns even darker."
 
     # YELLOW: tutorial interaction sequence
     "You search the room for a light source..."
 
-    g "Mom left something here..."
+    #option a) look at the shelves (where candles are)
+
+    #option b) look on the table 
+
+    #player can find candles, but if they dont pick uo the matches first it doesnt light up. 
+    label shelve_option:
+    
+    
+    label Table_option:
+    
+    g "oh,Mom left something here..."
 
     # diary/note interaction
     "You find a note next to a candle."
 
-    g "If anything ever scares you… close your eyes and stay still."
+    g "I can't read well.."
 
-    # mechanic introduced here
+  "dearest.. food in the fridge...bla bla..If bla bla scares you… close your eyes and stay still. love you, mom."
+
+    g "There are some matches next to it."
 
     "The room grows colder."
+    "A sudden presence fills the darkness."
+
+    
+    g "I should be quick and light it up."
+
+   #the player lights the candke up but it had already turned dark.
 
     show entity_flash
 
     e "..."
 
-    "A sudden presence fills the room."
-
+   
     jump day2
 
 
@@ -85,11 +101,11 @@ label day2:
 
     show angel_reflection_mirror
 
-    a "Oh, dearest."
+    a "oh dearest.."
 
-    a "You're hurt."
+    a "What happened to you.."
 
-    g "It was… that thing again."
+    g "It was… that thing.."
 
     a "I can protect you."
 
