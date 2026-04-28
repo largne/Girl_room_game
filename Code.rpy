@@ -1,4 +1,5 @@
-# Girl_room_game (working title lol)
+# Girl_room_game (working title)
+
 define g = Character("Girl")
 define a = Character("Angel")
 define e = Character("Entity")
@@ -6,85 +7,164 @@ define e = Character("Entity")
 default angel_trust = 0
 default gave_offering = False
 default knows_ritual = False
+default matches_found = False
+default candles_found = False
+
 
 label start:
-
     jump day1
 
 
 label day1:
 
-    scene room_day #placeholder code, will edit after images upload
+    scene room_day  # placeholder
+
+    g "It broke."
+
+   #image of a broken toy mayb shape of an angel (our evil angel took the inspo from here lol)
+
+    g "Not too long ago, just around after mom left."
+    g "And she isn't here to help me fix it."
 
     g "Today is silent, just like yesterday… and the day before."
-
-    g "Mom said she would come back in a week, but I don’t know when that is anymore. Or if it has already passed."
-
-    # window view / mirror foreshadow
+   
     scene window_view
 
-    g "Sometimes I miss her."
+    g "Mom said she would come back in a week, but I don’t know when that is anymore."
+    g "Or if it has already passed."
 
-    g "But atleast I’m not alone."
+    g "I feelt upset at first."
+    g "My only toy is broken."
+   
+    show Angel with dissolve
 
-    g "Before she left, she told me that angels would take care of me. Just like they did with her."
+    g "But i have another angel now. A real one."
+   g "Mom told me before she left, that sometimes for good things to happen you need to make sacrifices."
 
-    g "I think I have my own angel."
+   g "Maybe this was what she meant."
+   
+   g "Angel is nice, but I'm sad i can't play with angel long, it always leaves when the sun goes down."
+    
+    g "Nothing much i can do, other than wait for mom to come back."
+    g "And maybe she can fix my toy when she is back.."
+    g "She always says she will fix things anyways."
+ 
+    #OLD SCRIPT _____________________
+
+    g "Before she left, she told me that angel would take care of me. That was, before it broke."
+
+    g "But I have my own angel anyways, a real one."
 
     show angel_reflection at center
 
-    g "I see it sometimes. It doesn’t always speak. I don’t know how it found me, but I know it protects me."
+    g "I see it sometimes. It doesn’t always speak."
 
+
+    g "I don’t know how it found me, but I know it protects me."
+    
+   ______________________________________
+
+
+   
     a "..."
-
-    # Angel interaction minimal, uncanny
 
     hide angel_reflection
 
-    # candle mechanic intro
     scene dark_room
-    g "it's getting dark, it seems today we have no electricity."
 
-    g "I should light a candle before it turns even darker."
+    g "It’s getting dark…"
+    g "oh..Electricity is not working?"
+    g "I should light a candle before it gets worse."
 
-    # YELLOW: tutorial interaction sequence
     "You search the room for a light source..."
 
-    #option a) look at the shelves (where candles are)
+    jump search_loop
 
-    #option b) look on the table 
 
-    #player can find candles, but if they dont pick uo the matches first it doesnt light up. 
-    label shelve_option:
-    
-    
-    label Table_option:
-    
-    g "oh,Mom left something here..."
+# -------------------------
+# SEARCH LOOP
+# -------------------------
 
-    # diary/note interaction
-    "You find a note next to a candle."
+label search_loop:
 
-    g "I can't read well.."
+    menu:
 
-  "dearest.. food in the fridge...bla bla..If bla bla scares you… close your eyes and stay still. love you, mom."
+        "Look at the table":
+            jump table
 
-    g "There are some matches next to it."
+        "Look at the shelves":
+            jump shelves
 
-    "The room grows colder."
-    "A sudden presence fills the darkness."
 
-    
-    g "I should be quick and light it up."
+# -------------------------
+# TABLE
+# -------------------------
 
-   #the player lights the candke up but it had already turned dark.
+label table:
+
+    g "Oh… Mom left something here."
+
+    "You find matches and a small note."
+
+    g "I can’t read well..."
+
+    "The note reads: 'If anything scares you… close your eyes and stay still. Love, Mom.'"
+
+    g "..."
+
+    $ matches_found = True
+
+    g "I should be quick…"
+
+    "A strange feeling spreads through the room."
+
+    jump search_loop
+
+
+# -------------------------
+# SHELVES
+# -------------------------
+
+label shelves:
+
+    if not matches_found:
+        g "There are candles here."
+        g "But I need something to light them with..."
+
+        jump search_loop
+
+    else:
+          $ candles_found = True
+
+        g "I can light the candle now."
+
+        g "It’s getting harder to see..."
+
+        menu:
+            "Light the candle":
+                jump light_candle
+
+
+# -------------------------
+# LIGHT CANDLE
+# -------------------------
+
+label light_candle:
+
+    "You strike the matches."
+
+    "The flame flickers."
 
     show entity_flash
 
     e "..."
 
+    
+
+    return
+
    
-    jump day2
+    DAY 2:
 
 
 label day2:
