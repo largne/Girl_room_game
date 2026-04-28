@@ -23,10 +23,10 @@ label day1:
 
    #image of a broken toy mayb shape of an angel (our evil angel took the inspo from here lol)
 
-    g "Not too long ago, just around after mom left."
-    g "And she isn't here to help me fix it."
+     g "Not too long ago, just around after mom left."
+     g"And she isn't here to help me fix it."
 
-    g "Today is silent, just like yesterday… and the day before."
+     g"Today is silent, just like yesterday… and the day before."
    
     scene window_view
 
@@ -78,7 +78,7 @@ label day1:
 
     "You search the room for a light source..."
 
-    jump search_loop
+    jump search_loop_day1
 
 
 # -------------------------
@@ -90,17 +90,17 @@ label search_loop:
     menu:
 
         "Look at the table":
-            jump table
+            jump table_day1
 
         "Look at the shelves":
-            jump shelves
+            jump shelves_day1
 
 
 # -------------------------
 # TABLE
 # -------------------------
 
-label table:
+label table_day1:
 
     g "Oh… Mom left something here."
 
@@ -118,20 +118,20 @@ label table:
 
     "A strange feeling spreads through the room."
 
-    jump search_loop
+    jump search_loop_day1
 
 
 # -------------------------
 # SHELVES
 # -------------------------
 
-label shelves:
+label shelves_day1:
 
     if not matches_found:
         g "There are candles here."
         g "But I need something to light them with..."
 
-        jump search_loop
+        jump search_loop_day1
 
     else:
           $ candles_found = True
@@ -142,14 +142,14 @@ label shelves:
 
         menu:
             "Light the candle":
-                jump light_candle
+                jump light_candle_day1
 
 
 # -------------------------
 # LIGHT CANDLE
 # -------------------------
 
-label light_candle:
+label light_candle_day1:
 
     "You strike the matches."
 
@@ -164,7 +164,7 @@ label light_candle:
     return
 
    
-    DAY 2:
+   # DAY 2__________________________
 
 
 label day2:
@@ -173,7 +173,7 @@ label day2:
 
     g "..."
 
-    g "I woke up."
+    g "It's morning already.."
 
     show mirror_scene
 
@@ -183,17 +183,42 @@ label day2:
 
     a "oh dearest.."
 
+    g "Angel!"
+     
+    "Angel frowned glancing at the scar"
+
     a "What happened to you.."
 
-    g "It was… that thing.."
+    g "It was… that thing.. That..."
 
-    a "I can protect you."
+    "Angel's hug was visible on the mirror, yet you #here should i say she or you# didn't feel it in reality."
+    #still i or you# "It still made me feel warm."
+    
+    a "A presence.."
+    a "You came across something last night, didn't you?
+    a "Something not of this realm, just as me!
 
-    a "But only if you help me."
+    "Angel's face seemed concerned"
+
+    a "I can protect thee.
+
+    a "But only if you help me aswell."
 
     g "Help… you?"
 
+    a "yes, my dear sweet child. unfortunately, nothing in this realm works for free"
+
+   a "But do not fret, it isn't something big i ask of you, infact you can do it easily."
+
+    g "what is it?"
+
+    a "simple."
+
     a "Pray for me. And give me something you cherish."
+
+    a "then i can bring my power to protect you, help you rest a night without this creatures presence"
+
+    a "All that for a small price."
 
     # choice
     menu:
@@ -201,12 +226,12 @@ label day2:
             "Yes":
                 $ angel_trust += 1
                 $ gave_offering = True
-                jump day2_gift
-            "No":
-                jump day2_no_trust
+                jump gift_day2
 
+            "No"
+             jump persuasion_day2
 
-label day2_gift:
+label gift_day2:
 
     g "Okay… I will."
 
@@ -218,14 +243,29 @@ label day2_gift:
 
     jump day3
 
+label persuasion_day2
 
-label day2_no_trust:
+  a "Are you certain?"
 
-    g "I don’t understand."
+  "The scar on your face, didn't hurt that much but it was a reminder."
 
-    a "Then the monster will return."
+ "That something far much strong might hurt you"
 
-    jump day3
+ "Was it really a good idea to refuse the angel? Afterall the creature could do far much worse."
+
+g "..." 
+
+ "the choice was obvious"
+
+g "I'll do it."
+
+$ angel_trust += 1
+$ gave_offering = True
+jump rethink_day2
+
+Label rethink_day2
+
+
 
 
 label day3:
