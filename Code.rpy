@@ -1,15 +1,35 @@
-# Girl_room_game (working title)
+# The script of the game goes in this file.
 
-define g = Character("Girl")
-define a = Character("Angel")
-define e = Character("Entity")
+# Declare characters used by this game. The color argument colorizes the
+# name of the character.
 
-default angel_trust = 0
-default gave_offering = False
-default knows_ritual = False
-default matches_found = False
-default candles_found = False
+define g = "Girl"
 
+# The game starts here.
+
+init python:
+    def toggle_eyes():
+        store.eyes_closed = not store.eyes_closed
+
+
+
+
+screen eye_toggle():
+
+    if eye_event_active:
+
+        # BLACK SCREEN WHEN EYES CLOSED
+        if eyes_closed:
+            add Solid("#000000")
+
+        imagebutton:
+            xalign 0.98
+            yalign 0.02
+
+            idle ("eye_open.png" if not eyes_closed else "eye_close.png")
+            hover ("eye_open.png" if not eyes_closed else "eye_close.png")
+
+            action Function(toggle_eyes)
 
 label start:
     jump day1
@@ -17,66 +37,93 @@ label start:
 
 label day1:
 
-    scene room_day  # placeholder
+   
 
     g "It broke."
 
-   #image of a broken toy mayb shape of an angel (our evil angel took the inspo from here lol)
+    #image of a broken toy mayb shape of an angel (our evil angel took the inspo from here lol)
 
-     g "Not too long ago, just around after mom left."
-     g"And she isn't here to help me fix it."
+    g "Just around after mother left."
+    g "And she isn't here to help me fix it."
 
-     g"Today is silent, just like yesterday… and the day before."
-   
-    scene window_view
+    g "Today is silent, just like yesterday… and the day before."
 
-    g "Mom said she would come back in a week, but I don’t know when that is anymore."
+    g "Mother said she would come back in a week, but I don't know when that is anymore."
     g "Or if it has already passed."
 
-    g "I feelt upset at first."
-    g "My only toy is broken."
+    g "I felt upset at first, but she told me i am a big girl now."
+    g "And she told me not to cry, that the angels would take care of me just like they did with her."
+    g "..."
+    g "But i almost cried when doll got ripped."
+
+    g "..."
+
+    scene outside_day with fade 
+
+    g "It's too quiet without mom here. I can almost hear my thoughts out loud."
+
+    g "{cps=25}Huh?{/cps}" with vpunch
+
+    g "Did the curtain just move?"
+
+    g "That's weird... I thought I saw something outside."
+
+    g "..."
+
+    g "Oh, it's you."
    
-    show Angel with dissolve
 
-    g "But i have another angel now. A real one."
-   g "Mom told me before she left, that sometimes for good things to happen you need to make sacrifices."
+    show angel_window with dissolve
 
-   g "Maybe this was what she meant."
-   
-   g "Angel is nice, but I'm sad i can't play with angel long, it always leaves when the sun goes down."
-    
-    g "Nothing much i can do, other than wait for mom to come back."
-    g "And maybe she can fix my toy when she is back.."
-    g "She always says she will fix things anyways."
- 
-    #OLD SCRIPT _____________________
-
-    g "Before she left, she told me that angel would take care of me. That was, before it broke."
-
-    g "But I have my own angel anyways, a real one."
-
-    show angel_reflection at center
-
-    g "I see it sometimes. It doesn’t always speak."
-
-
-    g "I don’t know how it found me, but I know it protects me."
-    
-   ______________________________________
-
-
-   
     a "..."
 
-    hide angel_reflection
+    g "You're back."
 
-    scene dark_room
+    g "Sorry, i can't play now."
 
-    g "It’s getting dark…"
+    g "Mom said I shouldn't stay up too long."
+    
+    g "Angel is nice"
+    
+    g "But you always leave when the sun goes down."
+
+    g "And I don't know where you go."
+    
+   
+
+    a "..."
+
+    g "..."
+
+    g "There's nothing I can do."
+
+    g "I just wait."
+
+    g "For mom to come back."
+
+   
+
+    g "She said she'd fix things."
+
+    g "She always fixes things."
+
+    g "So she'll fix my toy too."
+
+
+    a "..."
+
+    g "Right?"
+
+    
+
+    hide angel_window
+
+    scene outside_night with dissolve
+
+    g "It's getting dark…"
     g "oh..Electricity is not working?"
     g "I should light a candle before it gets worse."
-
-    "You search the room for a light source..."
+    
 
     jump search_loop_day1
 
@@ -85,15 +132,85 @@ label day1:
 # SEARCH LOOP
 # -------------------------
 
-label search_loop:
+label search_loop_day1:
+     
+    scene room_sunset with dissolve
 
+    "You should light a candle before it gets worse."
     menu:
 
         "Look at the table":
             jump table_day1
 
+        "Look at the dresser":
+            jump dresser_day1
+
         "Look at the shelves":
             jump shelves_day1
+
+
+label dresser_day1:
+
+    scene dresser with dissolve
+
+    call screen dresser_screen
+
+    jump search_loop_day1
+    
+
+screen dresser_screen:
+
+    add "dresser_default.png"
+
+    # RETURN BUTTON (top)
+    textbutton "RETURN":
+        xpos 20
+        ypos 20
+        action Return()
+
+    # LEFT DRAWER
+    imagebutton:
+        idle "asset_left_drawer.png" 
+        xalign 0.2
+        yalign 0.247
+        action Jump("left_drawer")
+        focus_mask True
+
+    # RIGHT DRAWER
+    imagebutton: 
+        idle "asset_right_drawer.png" 
+        xalign 0.812
+        yalign 0.245
+        action Jump("right_drawer")
+        focus_mask True
+    
+    
+label left_drawer:
+
+    scene open_left_drawer with dissolve
+
+    "You open the left drawer."
+
+    "A faint smell of dust and old fabric comes out."
+
+    "There's nothing useful there."
+
+    jump dresser_day1
+
+
+label right_drawer:
+
+    scene open_right_drawer with dissolve
+
+    "You open the right drawer."
+
+    "A thread, needle and scissors."
+
+    "Would be useful if you needed to cut something."
+
+    "But not right now."
+
+    jump dresser_day1
 
 
 # -------------------------
@@ -102,11 +219,13 @@ label search_loop:
 
 label table_day1:
 
-    g "Oh… Mom left something here."
+    g "Oh…"
+    
+    g "Mom left something here."
 
     "You find matches on the table and a small note."
 
-    g "I can’t read well..."
+    g "I can't read well..."
 
     "as you try to decipher,it appears that the note reads: 'I'll be back. If anything scares you… close your eyes and stay still. Love, Mom.'"
 
@@ -117,6 +236,12 @@ label table_day1:
     g "I should be quick…"
 
     "A strange feeling spreads through the room."
+
+ 
+    $ eye_event_active = True
+    show screen eye_toggle 
+
+    "(you can now toggle close or open eyes)"
 
     jump search_loop_day1
 
@@ -134,11 +259,11 @@ label shelves_day1:
         jump search_loop_day1
 
     else:
-          $ candles_found = True
+        $ candles_found = True
 
         g "I can light the candle now."
 
-        g "It’s getting harder to see..."
+        g "It's getting harder to see..."
 
         menu:
             "Light the candle":
@@ -155,184 +280,40 @@ label light_candle_day1:
 
     "The flame flickers."
 
-    show entity_flash
-
-    e "..."
-
-    
-
-    return
-
-   
-   # DAY 2__________________________  
+    scene candle_room with dissolve
 
 
-label day2:  # SABINA EDIT !!!!
+    g "I hope there will be electricity tomorrow.."
 
-    scene morning_room
+    g "I don't have enough matches to light up many candles."
 
+    g"..."
+
+    "Time passes, eventually you tuck yourself in the bed."
+
+
+    scene candle_bed with dissolve
+
+
+    g "I can't fall asleep easily when i'm alone."
+    g "It feels scary, as if something is hiding under my bed and it's waiting for me to go to sleep."
+    g "If only i could talk to Angel at this time."
     g "..."
 
-    g "It's morning already.."
+    scene dark_bed with dissolve
 
-    show mirror_scene
+    g "..!" with vpunch
 
-    g "Am I hurt?"
+    g "The candle got blown of?"
 
-    show angel_reflection_mirror
+    g "But the window is closed, and there's no wind.."
 
-    a "oh dearest.."
+    g "I'm scared.."
 
-    g "Angel!"
-     
-    "Angel frowns glancing at the scar"
-
-    a "What happened to you.."
-
-    g "It was… that thing.. That..."
+    g "What's that noise?"
+ 
+    g "I should close my eyes, but i'm scared to do so.."
     
-    show angel_hug
 
-    "Angel's hug was visible on the mirror, yet you didn't feel it on you."
 
-    "It still felt nice."
-    
-    a "A presence.."
-    a "You came across something last night, didn't you?
-    a "Something not of this realm, just as i am"
-
-    "Angel's face seemed concerned"
-
-    a "I can protect thee.
-
-    a "But only if you help me aswell."
-
-    g "Help… you?"
-
-    a "yes, my dear sweet child. But do not fret, it isn't something big i ask of you, infact you can do it easily."
-
-    g "what is it?"
-
-    a "simple."
-
-    a "Pray for me."
-
-    a "then i can bring my power to protect you, help you rest a night without this creatures presence"
-
-    a "But i need your prayers, you see my powers grows weak once the sun goes down."
-
-    # choice
-    menu:
-        "Accept Angel's offer?":
-            "Yes":
-                $ angel_trust += 1
-                $ gave_prayer = True
-                jump gift_day2
-
-            "No"
-             jump persuasion_day2
-
-label gift_day2:
-
-    g "Okay… I will."
-
-    a "Good child."
-
-    "You tuck yourself in bed, and pray as you fall asleep."
-
-    "The night feels different."
-
-    jump day3
-
-label persuasion_day2
-
-  a "Are you certain?"
-
-  "The scar on your face, didn't hurt that much but it was a reminder."
-
- "That something far much strong might hurt you"
-
- "Was it really a good idea to refuse the angel? Afterall the creature could do far much worse."
-
-g "..." 
-
- "the choice was obvious, and its just a simple prayer."
-
-g "I'll do it."
-
-$ angel_trust += 1
-$ gave_prayer = True
-
-a "Good child."
-
-    "You tuck yourself in bed, and pray as you fall asleep."
-
-    "The night feels different."
-
-# SAB BAB
-
-
-label day3: 
-
-    scene morning_kitchen
-
-    g "I slept… I think."
-
-    g "The monster didn’t come."
-
-    g "My angel protected me."
-
-    g "But… I’m still scared."
-
-    scene breakfast_table
-
-    # YELLOW: distorted food / uncanny domestic scene
-    "The room feels slightly wrong."
-
-    show angel_glitch
-
-    a "Have you rested well?"
-
-    g "Yes… thank you."
-
-    a "There is a way to remove the monster forever."
-
-    a "But everything has a price."
-
-    g "I don’t have money."
-
-    a "I don’t want money."
-
-    a "I want something… from your world."
-
-    g "I don’t understand..."
-
-    a "You don’t need to."
-
-    a "Just trust me."
-
-    g "What is it?"
-
-    a "A ritual."  #SAB RITUAL DIALOGUE
-
-    menu:
-        "Accept ritual?":
-            "Refuse":
-                jump day3_refuse
-            "Ask more":
-                jump day3_continue
-
-
-label day3_refuse:
-
-    g "No… I can’t."
-
-    a "Then it will return."
-
-    jump night3
-
-
-label day3_continue:
-
-    g "I
-
+    return
