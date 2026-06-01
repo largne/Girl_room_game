@@ -9,3 +9,6 @@ eyes close and open (safety toggle)
 curiosity meter that cancles out eyes close
 
 it is a small point and click horror game originally started for the scream game jam, screamjam or sth. 
+
+
+!!!!! Code.rpy is directly connected to the definitons file since the mechanics are defined there
