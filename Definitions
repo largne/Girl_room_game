@@ -1,0 +1,231 @@
+
+#Here also the code for the eye toggle mechanics or the death/entity mechanics
+
+transform half_opacity_right:
+    xalign -0.5   # moves image slightly to the right (0.5 = center)
+    yalign -0.5
+    alpha 0.5
+
+define g = Character("Girl")
+define a = Character("Angel")
+define e = Character("Entity")
+
+default angel_trust = 0
+default gave_offering = False
+default knows_ritual = False
+default matches_found = False
+default candles_found = False
+
+
+
+image room_day = "room.png"
+image outside_day = "outside_day.png"
+image outside_night= "outside_night.png"
+image angel_window = "angel_window.png"
+image mirror_hug = "mirror_angel_hug.png"
+image mirror_angel_neutral = "mirror_angel_neutral.png"
+image room_sunset = "sunset_room.png"
+
+image asset_left_drawer = "asset_left_drawer.PNG"
+image asset_right_drawer= "asset_right_drawer.PNG"
+image dresser = "dresser_default.PNG"
+image open_left_drawer = "dresser_open_leftdrawer.PNG"
+image open_right_drawer = "dresser_open_rightdrawer.PNG"
+
+image button_close_eyes = "eye_open.PNG"
+image button_open_eyes =  "eye_close.PNG"
+image candle_room = "candle_lit.PNG"
+image candle_bed = "candle_bed.PNG"
+image dark_bed = "dark_bed.PNG"
+
+
+image bed_2 = "bed_2.png"
+image bed_3 = "bed_3.png"
+
+default eye_event_active = False
+default eyes_closed = False
+
+default fear_time = 5.0
+default max_fear_time = 5.0
+
+default urge = 0.0
+default max_urge = 3.0
+
+# ~20 second survival window feel
+default event_time = 20.0
+
+default glimpse = None
+default glimpse_timer = 0.0
+default glimpse_alpha = 0.0
+
+
+init python:
+
+    import random
+
+    def toggle_eyes():
+        store.eyes_closed = not store.eyes_closed
+        renpy.restart_interaction()
+
+
+    def start_eye_event():
+
+        store.eye_event_active = True
+        store.eyes_closed = False
+
+        store.fear_time = store.max_fear_time
+        store.urge = 0.0
+        store.event_time = 20.0
+
+        store.glimpse = None
+        store.glimpse_timer = 0.0
+        store.glimpse_alpha = 0.0
+
+        renpy.hide_screen("say")
+        renpy.show_screen("fear_ui")
+
+
+    def stop_eye_event():
+
+        store.eye_event_active = False
+
+        store.glimpse = None
+        store.glimpse_alpha = 0.0
+
+        renpy.show_screen("say")
+        renpy.hide_screen("fear_ui")
+
+
+    def pick_glimpse():
+
+        ratio = store.fear_time / store.max_fear_time
+
+        if ratio > 0.66:
+            return "bed_1.png"
+        elif ratio > 0.33:
+            return "bed_2.png"
+        else:
+            return "bed_3.png"
+
+
+    def fear_tick():
+
+        if not store.eye_event_active:
+            return
+
+        dt = 0.05
+
+        store.event_time -= dt
+
+        if store.eyes_closed:
+
+            store.fear_time += dt * 0.35
+            store.urge += dt * 1.0
+
+            store.glimpse = None
+            store.glimpse_alpha = 0.0
+            store.glimpse_timer = 0.0
+
+        else:
+
+            store.fear_time -= dt * 0.65
+            store.urge -= dt * 0.9
+
+            store.glimpse_timer -= dt
+
+            if store.glimpse_timer <= 0.0 and random.random() < 0.10:
+                store.glimpse = pick_glimpse()
+                store.glimpse_alpha = 0.0
+                store.glimpse_timer = random.uniform(1.0, 2.0)
+
+            if store.glimpse is not None:
+                store.glimpse_alpha += dt * 2.2
+                if store.glimpse_alpha > 0.95:
+                    store.glimpse_alpha = 0.95
+
+
+        store.fear_time = max(0.0, min(store.max_fear_time, store.fear_time))
+        store.urge = max(0.0, min(store.max_urge, store.urge))
+
+
+        if store.urge >= store.max_urge:
+            store.eyes_closed = False
+            store.urge = 0.0
+
+
+        if store.fear_time <= 0:
+            stop_eye_event()
+            renpy.jump("death_eyes")
+
+
+        if store.event_time <= 0:
+            stop_eye_event()
+            return
+
+
+        renpy.restart_interaction()
+
+
+screen fear_ui():
+
+    if store.eye_event_active:
+
+        timer 0.05 repeat True action Function(fear_tick)
+
+        # BLACK BACKGROUND (behind UI only)
+        if store.eyes_closed:
+            add Solid("#000000"):
+                xsize config.screen_width
+                ysize config.screen_height
+
+        # FEAR BAR
+        frame:
+            xalign 0.5
+            yalign 0.05
+            xsize 600
+            ysize 25
+
+            add Solid("#333333")
+
+            $ ratio = 0.0
+            if store.max_fear_time > 0:
+                $ ratio = store.fear_time / store.max_fear_time
+
+            $ ratio = max(0.0, min(1.0, ratio))
+
+            add Solid("#ffffff"):
+                xsize int(600 * ratio)
+                ysize 25
+
+
+        # URGE BAR
+        frame:
+            xalign 0.5
+            yalign 0.10
+            xsize 400
+            ysize 15
+
+            add Solid("#444444")
+
+            add Solid("#ff5555"):
+                xsize int(400 * (store.urge / store.max_urge))
+                ysize 15
+
+
+        # GLIMPSE
+        if store.glimpse is not None and not store.eyes_closed:
+            add store.glimpse:
+                xalign 0.5
+                yalign 0.5
+                alpha store.glimpse_alpha
+
+
+        # EYE BUTTON (always top visually)
+        imagebutton:
+            xalign 0.98
+            yalign 0.02
+
+            idle ("eye_open.PNG" if not store.eyes_closed else "eye_close.PNG")
+            hover ("eye_open.PNG" if not store.eyes_closed else "eye_close.PNG")
+
+            action Function(toggle_eyes)
