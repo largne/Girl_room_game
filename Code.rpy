@@ -3,33 +3,11 @@
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 
-define g = "Girl"
+
 
 # The game starts here.
 
-init python:
-    def toggle_eyes():
-        store.eyes_closed = not store.eyes_closed
 
-
-
-
-screen eye_toggle():
-
-    if eye_event_active:
-
-        # BLACK SCREEN WHEN EYES CLOSED
-        if eyes_closed:
-            add Solid("#000000")
-
-        imagebutton:
-            xalign 0.98
-            yalign 0.02
-
-            idle ("eye_open.png" if not eyes_closed else "eye_close.png")
-            hover ("eye_open.png" if not eyes_closed else "eye_close.png")
-
-            action Function(toggle_eyes)
 
 label start:
     jump day1
@@ -219,29 +197,31 @@ label right_drawer:
 
 label table_day1:
 
-    g "Oh…"
-    
-    g "Mom left something here."
-
-    "You find matches on the table and a small note."
-
-    g "I can't read well..."
-
-    "as you try to decipher,it appears that the note reads: 'I'll be back. If anything scares you… close your eyes and stay still. Love, Mom.'"
+    "\"I'll be back. If anything scares you… close your eyes and stay still. Love, Mom.\""
 
     g "..."
 
-    $ matches_found = True
+    g "Close my eyes?"
 
-    g "I should be quick…"
+    g "Like… just don't look?"
 
     "A strange feeling spreads through the room."
 
- 
-    $ eye_event_active = True
-    show screen eye_toggle 
+    g "That doesn't make sense…"
 
-    "(you can now toggle close or open eyes)"
+
+    g "..."
+
+    g "Why does it feel like something is already here?"
+
+    $ matches_found = True
+
+
+    "Something has changed."
+
+    "The room feels… less still than before."
+
+    "(A sound is coming. You don't know from where yet.)"
 
     jump search_loop_day1
 
@@ -296,7 +276,8 @@ label light_candle_day1:
 
 
     g "I can't fall asleep easily when i'm alone."
-    g "It feels scary, as if something is hiding under my bed and it's waiting for me to go to sleep."
+    g "It feels scary… like something is hiding under my bed."
+    g "Waiting for me to close my eyes."
     g "If only i could talk to Angel at this time."
     g "..."
 
@@ -308,12 +289,66 @@ label light_candle_day1:
 
     g "But the window is closed, and there's no wind.."
 
-    g "I'm scared.."
+    g "..."
 
     g "What's that noise?"
- 
-    g "I should close my eyes, but i'm scared to do so.."
+
+    "Something is wrong."
+
+    # =========================
+    # START HORROR MECHANIC HERE
+    # =========================
+
     
 
+    g "I'm scared.."
+
+    g "Mom said.."
+
+    g "That I should close my eyes."
+
+    g "But… that doesn't feel safe right now."
+
+    g "..."
+
+    g"Oh no.."
+
+
+
+    $ start_eye_event()
+
+    "You must close your eyes."
+
+    "But it's scary, and you want to open your eyes."
+
+    "If the urge gets to you, you will automatically."
+
+    "But then you will be in danger again."
+   
+
+    
+    
+    
+    
+
+
+
+
+    return
+
+
+label death_eyes:
+
+    scene black with fade
+
+    "..."
+
+    "You kept your eyes open."
+
+    "Too long."
+
+    "Something noticed."
+
+    "You shouldn't have looked."
 
     return
